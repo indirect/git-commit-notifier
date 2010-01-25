@@ -1,16 +1,16 @@
 h1. Git Commit Notifier
 
-<pre>by Csoma Zoltan (Primalgrasp) (zoltan 'at' primalgrasp 'dot' com)</pre>
-
 Sends email commit messages splitting commits that were pushed in one
 step. Email is delivered as text or HTML with changes refined per
 word. Emails have a scanable subject containing the first sentence of
 the commit as well as the author, project and branch name.
 
+A reply-to header is added containing the author of the commit. This makes follow up really simple.
+
 For example:
 <pre>[rails][master] Fix Brasilia timezone. [#1180 state:resolved] </pre>
 
-A reply-to header is added containing the author of the commit. This makes follow up really simple. If multiple commits are pushed at once, emails are numbered in chronological order:
+If multiple commits are pushed at once, emails are numbered in chronological order:
 <pre>
  [rails][master][000] Added deprecated warning messages to Float#months and Float#years deprications.
  [rails][master][001] Enhance testing for fractional days and weeks. Update changelog.
@@ -22,27 +22,28 @@ Example email:
 
 h1. Requirements
 
-* Ruby
-* RubyGems
-* diff/lcs gem
+* Ruby and RubyGems
 * SMTP server or sendmail compatible mailer
-* mocha, hpricot gems for testing
 
 h1. Installing and Configuring
 
-Before installing the Git Commit Notification script, make sure the following Git settings are correct:
-* git config hooks.mailinglist (email address of the recipient, probably your mailing list address)
-* git config hooks.emailprefix (application name, used in email subject)
+Install the gem:
+  <pre>gem install git-commit-notifier</pre>
 
-See /usr/local/share/git_commit_notifier/config/config.yml for overriding these settings
+Link the script in as your post-receive hook:
+  <pre>cd /path/to/your/repo.git/hooks
+    ln -s `which git-commit-notifier` post-receive</pre>
 
-Run the automated installation script:
-  <pre>sudo rake install</pre>
+Edit the configuration to suit you:
+  * git config hooks.mailinglist  (email address of the recipient, probably your mailing list address)
+  * git config hooks.emailprefix  (application name for subject line, defaults to repo name)
+  * git config hooks.smtpserver   (optional hostname:port of your smtp server, default is localhost)
+  * git config hooks.smtpuser     (username for external smtp)
+  * git config hooks.smtppassword (password for external smtp)
 
-To update already installed script, use:
-  <pre>sudo rake update</pre>
+h1. Contributions
 
-See /usr/local/share/git_commit_notifier/config/config.yml for setting your SMTP server address and some other mail options.
+Original by Csoma Zoltan (Primalgrasp), with a pretty thorough makeover by Andre Arko (indirect).
 
 h1. License
 
