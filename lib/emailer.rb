@@ -40,7 +40,7 @@ class Emailer
 
   def perform_delivery_smtp(content, smtp_settings)
     settings = { }
-    %w(address port domain user_name password authentication).each do |key|
+    %w(address port domain user_name password authentication use_tls).each do |key|
       val = smtp_settings[key].to_s.empty? ? nil : smtp_settings[key]
       settings.merge!({ key => val})
     end
