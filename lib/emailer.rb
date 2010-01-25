@@ -50,8 +50,8 @@ class Emailer
       smtp.open_message_stream(@from_address, [@recipient]) do |f|
         content.each do |line|
           f.puts line
-          end
         end
+      end
     end
   end
 
