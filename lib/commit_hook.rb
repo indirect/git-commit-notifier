@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'cgi'
-require 'net/smtp'
 require 'sha1'
 
 require 'diff_to_html'

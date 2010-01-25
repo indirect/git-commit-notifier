@@ -1,5 +1,10 @@
 require 'yaml'
 require 'erb'
+require 'net/smtp'
+begin
+  require 'smtp_tls'
+rescue LoadError
+end
 
 class Emailer
 
@@ -39,8 +44,9 @@ class Emailer
       val = smtp_settings[key].to_s.empty? ? nil : smtp_settings[key]
       settings.merge!({ key => val})
     end
-    Net::SMTP.start(settings['address'], settings['port'], settings['domain'],
-                    settings['user_name'], settings['password'], settings['authentication']) do |smtp|
+    smtp = Net::SMTP.new settings['address'], settings['port']
+    smtp.enable_starttls if settings['use_tls']
+    smtp.start(settings['domain'], settings['user_name'], settings['password'], settings['authentication']) do |smtp|
       smtp.open_message_stream(@from_address, [@recipient]) do |f|
         content.each do |line|
           f.puts line
